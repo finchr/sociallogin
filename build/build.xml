@@ -35,7 +35,9 @@
 	<target name="package-plugin-folder" description="Iterate over the plugins in an area (system, user, ...) directory">
 		<property name="plugin_area" value="${dirname}" />
 
-		<foreach param="plugin_name" absparam="plugin_dir" target="package-plugin-item">
+		<foreach param="plugin_name" absparam="plugin_dir" target="package-plugin-item"
+				 inheritall="true" inheritrefs="true"
+		>
 			<fileset dir="${absname}">
 				<type type="dir" />
 				<depth max="0" min="0" />
