@@ -12,6 +12,20 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/microsoft/src" packagePrefix="Joomla\Plugin\Sociallogin\Microsoft\" isTestSource="false"/>
       <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/synology/src" packagePrefix="Joomla\Plugin\Sociallogin\SynologyOIDC\" isTestSource="false"/>
       <sourceFolder url="file://$MODULE_DIR$/plugins/system/sociallogin/src" packagePrefix="Joomla\Plugin\System\SocialLogin\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/amazon/src" packagePrefix="Akeeba\Plugin\Sociallogin\Amazon\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/apple/src" packagePrefix="Akeeba\Plugin\Sociallogin\Apple\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/discord/src" packagePrefix="Akeeba\Plugin\Sociallogin\Discord\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/facebook/src" packagePrefix="Akeeba\Plugin\Sociallogin\Facebook\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/github/src" packagePrefix="Akeeba\Plugin\Sociallogin\Github\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/google/src" packagePrefix="Akeeba\Plugin\Sociallogin\Google\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/linkedin/src" packagePrefix="Akeeba\Plugin\Sociallogin\Linkedin\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/microsoft/src" packagePrefix="Akeeba\Plugin\Sociallogin\Microsoft\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/paypal/src" packagePrefix="Akeeba\Plugin\Sociallogin\Paypal\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/spotify/src" packagePrefix="Akeeba\Plugin\Sociallogin\Spotify\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/synology/src" packagePrefix="Akeeba\Plugin\Sociallogin\SynologyOIDC\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/twitch/src" packagePrefix="Akeeba\Plugin\Sociallogin\Twitch\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/sociallogin/yahoo/src" packagePrefix="Akeeba\Plugin\Sociallogin\Yahoo\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/system/sociallogin/src" packagePrefix="Akeeba\Plugin\System\SocialLogin\" isTestSource="false"/>
     </content>
     <orderEntry type="inheritedJdk"/>
     <orderEntry type="sourceFolder" forTests="false"/>

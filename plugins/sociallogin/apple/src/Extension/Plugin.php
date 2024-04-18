@@ -230,8 +230,8 @@ class Plugin extends AbstractPlugin
 		// Pass through information from the JWT. Note that the name is NEVER passed through the JWT (Apple doesn't have it)
 		$ret['id']       = $claims->get('sub', '');
 		$ret['email']    = $claims->get('email', '');
-		$ret['verified'] = ($claims->get('real_user_status', 0) == 2)
-		                   || ($claims->get('email_verified', 'false') === 'true');
+		$ret['verified'] = ($claims->get('email_verified', 'false') === 'true')
+			|| $claims->get('email_verified', 'false') === true;
 
 		return $ret;
 	}

@@ -4,6 +4,7 @@ Akeeba SocialLogin 4.8.0
 ~ Changed the namespace of the plugins from Joomla\Plugin to Akeeba\Plugin
 ~ Use private dependencies for JWT encoding/decoding (used in the Login with Apple integration)
 # [HIGH] Login with Apple: nonce validation randomly failing with Joomla! 5
+# [HIGH] Login with Apple: Apple does not provide user verification for web-based login
 
 Akeeba SocialLogin 4.7.1
 ================================================================================
