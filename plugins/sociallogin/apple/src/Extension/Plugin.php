@@ -34,6 +34,7 @@ use Joomla\CMS\Crypt\Crypt;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Session\SessionInterface;
 use RuntimeException;
 
 if (!class_exists(AbstractPlugin::class))
@@ -111,6 +112,11 @@ class Plugin extends AbstractPlugin
 		{
 			$this->appSecret = $this->getSecretKey();
 
+			/** @var SessionInterface $session */
+			$session = $this->getApplication()->getSession();
+			$nonce   = $session->get('plg_sociallogin_apple.nonce', sha1(random_bytes(64)));
+			$session->set('plg_sociallogin_apple.nonce', $nonce);
+
 			$options         = [
 				'authurl'       => 'https://appleid.apple.com/auth/authorize',
 				'tokenurl'      => 'https://appleid.apple.com/auth/token',
@@ -120,7 +126,7 @@ class Plugin extends AbstractPlugin
 				                   . $this->integrationName . '&format=raw',
 				'scope'         => 'name email',
 				'requestparams' => [
-					'nonce'         => $this->getApplication()->getSession()->getToken(),
+					'nonce'         => $nonce,
 					'response_mode' => 'form_post',
 				],
 			];
@@ -203,14 +209,23 @@ class Plugin extends AbstractPlugin
 		}
 
 		// Verify the nonce (Joomla's anti-CSRF token).
+		/** @var SessionInterface $session */
+		$session        = $this->getApplication()->getSession();
 		$claims         = $token->claims();
 		$nonceSupported = $claims->get('nonce_supported', false);
-		$nonce          = $claims->get('nonce', '');
+		$incomingNonce  = $claims->get('nonce', '');
+		$referenceNonce = $session->get('plg_sociallogin_apple.nonce', null);
 
-		if ($nonceSupported && !Crypt::timingSafeCompare($this->getApplication()->getSession()->getToken(), $nonce))
+		if (
+			$nonceSupported
+			&& !empty($referenceNonce)
+		    && !Crypt::timingSafeCompare($referenceNonce, $incomingNonce)
+		)
 		{
 			throw new RuntimeException('Invalid request.');
 		}
+
+		$session->remove('plg_sociallogin_apple.nonce');
 
 		// Pass through information from the JWT. Note that the name is NEVER passed through the JWT (Apple doesn't have it)
 		$ret['id']       = $claims->get('sub', '');
