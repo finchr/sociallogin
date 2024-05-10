@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba SocialLogin 4.8.1
+================================================================================
+# [HIGH] "Cannot use object of type ReflectionProperty as array" when dynamic user groups are used
+
 Akeeba SocialLogin 4.8.0
 ================================================================================
 ~ Changed the namespace of the plugins from Joomla\Plugin to Akeeba\Plugin

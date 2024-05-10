@@ -158,7 +158,7 @@ trait DynamicUsergroups
 		// We can commit our changes back to the cache property and make it publicly inaccessible again.
 		if (version_compare(PHP_VERSION, '8.3.0', 'ge'))
 		{
-			$reflectedAccess->setStaticPropertyValue('groupsByUser', $groupsByUser);
+			$reflectedAccess->setStaticPropertyValue('groupsByUser', $rawGroupsByUser);
 		}
 		else
 		{
