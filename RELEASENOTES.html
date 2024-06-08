@@ -1,13 +1,5 @@
 <h3>What's new</h3>
 
 <p>
-	<strong>Changed the namespace of the plugins from <code>Joomla\Plugin</code> to <code>Akeeba\Plugin</code></strong>. This is the recommended best practice in Joomla. But why didn't we do this to begin with? We rewrote this software in early 2021 with the native API for the then-upcoming Joomla! 4.0. In fact, Joomla! itself had not converted its own plugins to the native Joomla! 4.x format yet, and wouldn't finish doing so until version 4.4 released two years later. We were the first developers, amongst both third party <em>and</em> core developers, to write native Joomla! 4.x plugins, i.e. our code predated any documented best practice. If you run into problems after updating, delete the file <code>administrator/cache/autoload_psr4.php</code> so that Joomla! can &quot;see&quot; the changed plugin namespace. Normally, Joomla! does that automatically when you install the update, but it might fail in a stark minority of edge cases (timeouts, bad permissions, third party plugin causing an error during update, ...).
-</p>
-
-<p>
-	<strong>Use private dependencies for JWT encoding/decoding (used in the Login with Apple integration)</strong>. The dependencies previously used for Login with Apple were shared with Joomla! itself. However, Joomla! 4.x and 5.x use different versions of those dependencies, making this impossible to maintain. We now use a privately namespaced copy of the necessary dependencies using the industry-standard <code>coenjacobs/mozart</code> Composer dependency to automate the process. This fixes Login with Apple problems under Joomla! 5.
-</p>
-
-<p>
 	<strong>Bug fixes and minor improvements</strong>. Please take a look at the CHANGELOG below.
 </p>
