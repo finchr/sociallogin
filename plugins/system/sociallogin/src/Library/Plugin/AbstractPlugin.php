@@ -143,6 +143,14 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 	protected string $icon = '';
 
 	/**
+	 * Which Joomla! applications should this plugin be enabled for.
+	 *
+	 * @var   array|string[]
+	 * @since 4.8.2
+	 */
+	protected array $enabledApplications = ['site', 'administrator'];
+
+	/**
 	 * Constructor. Loads the language files as well.
 	 *
 	 * @param   DispatcherInterface  &$subject  The object to observe
@@ -197,6 +205,11 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 		$this->appSecret           = $this->params->get('appsecret', '');
 		$this->bgColor             = $this->params->get('bgcolor', $this->bgColor);
 		$this->fgColor             = $this->params->get('fgcolor', $this->fgColor);
+		$this->enabledApplications = explode(
+			',',
+			$this->params->get('enabledapplications', 'site,administrator')
+		);
+		$this->enabledApplications = $this->enabledApplications ?: ['site', 'administrator'];
 	}
 
 	/**
@@ -208,6 +221,11 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 	 */
 	public function onSocialLoginAjax(?Event $e = null): void
 	{
+		if (!$this->isAllowedInThisApplication())
+		{
+			return;
+		}
+
 		Log::add(
 			'Begin handing of authentication callback',
 			Log::DEBUG,
@@ -418,6 +436,11 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 	 */
 	public function onSocialLoginGetLinkButton(Event $event)
 	{
+		if (!$this->isAllowedInThisApplication())
+		{
+			return;
+		}
+
 		/**
 		 * @var   User $user The user to be linked / unlinked
 		 */
@@ -523,6 +546,11 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 	 */
 	public function onSocialLoginGetLoginButton(Event $event)
 	{
+		if (!$this->isAllowedInThisApplication())
+		{
+			return;
+		}
+
 		/**
 		 * @var   string $loginURL   The URL to be redirected to upon successful login / account link
 		 * @var   string $failureURL The URL to be redirected to on error
@@ -588,6 +616,11 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 	 */
 	public function onSocialLoginUnlink(Event $event)
 	{
+		if (!$this->isAllowedInThisApplication())
+		{
+			return;
+		}
+
 		/**
 		 * @var   string    $slug The integration to unlink from
 		 * @var   User|null $user The user to unlink, null to use the current user
@@ -750,5 +783,14 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 		            ->where($db->qn('user_id') . ' = ' . $db->q($userId))
 		            ->where($db->qn('profile_key') . ' LIKE ' . $db->q($slug . '.%'));
 		$db->setQuery($query)->execute();
+	}
+
+	protected function isAllowedInThisApplication(): bool
+	{
+		return array_reduce(
+			$this->enabledApplications,
+			fn(bool $carry, string $appName) => $carry || $this->getApplication()->isClient($appName),
+			false
+		);
 	}
 }

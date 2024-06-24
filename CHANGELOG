@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba SocialLogin 4.8.2
+================================================================================
++ Choose whether to show in frontend, backend, or both
+
 Akeeba SocialLogin 4.8.1
 ================================================================================
 # [HIGH] "Cannot use object of type ReflectionProperty as array" when dynamic user groups are used

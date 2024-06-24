@@ -59,10 +59,26 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
+                
                 <field name="fgcolor" type="color" default="#ffffff" label="PLG_SOCIALLOGIN_AMAZON_FIELD_FGCOLOR_LABEL"
                        description="PLG_SOCIALLOGIN_AMAZON_FIELD_FGCOLOR_DESC" showon="customcss:1"/>
                 <field name="bgcolor" type="color" default="#000000" label="PLG_SOCIALLOGIN_AMAZON_FIELD_BGCOLOR_LABEL"
                        description="PLG_SOCIALLOGIN_AMAZON_FIELD_BGCOLOR_DESC" showon="customcss:1"/>
+
+                <field
+                        name="enabledapplications"
+                        type="radio"
+                        layout="joomla.form.field.radio.buttons"
+                        class="btn-group"
+                        default="site,administrator"
+                        label="PLG_SOCIALLOGIN_AMAZON_FIELD_ENABLEDAPPLICATIONS_LABEL"
+                        description="PLG_SOCIALLOGIN_AMAZON_FIELD_ENABLEDAPPLICATIONS_DESC"
+                >
+                    <option value="site" class="btn btn-outline-secondary">PLG_SOCIALLOGIN_AMAZON_FIELD_ENABLEDAPPLICATIONS_SITE</option>
+                    <option class="btn btn-outline-danger">PLG_SOCIALLOGIN_AMAZON_FIELD_ENABLEDAPPLICATIONS_ADMIN</option>
+                    <option value="site,administrator" class="btn btn-outline-primary">PLG_SOCIALLOGIN_AMAZON_FIELD_ENABLEDAPPLICATIONS_BOTH</option>
+                </field>
+
             </fieldset>
         </fields>
     </config>
