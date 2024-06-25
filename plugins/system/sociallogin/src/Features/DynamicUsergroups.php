@@ -243,7 +243,7 @@ trait DynamicUsergroups
 	private function getSocialLoginLinkedStatus(User $user)
 	{
 		$db    = $this->getDatabase();
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select(
 				[
 					$db->qn('profile_key'),

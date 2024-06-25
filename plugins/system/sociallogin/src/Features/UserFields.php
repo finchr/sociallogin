@@ -110,7 +110,7 @@ trait UserFields
 		// Load the profile data from the database.
 		$db = $this->getDatabase();
 
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 		            ->select([$db->qn('profile_key'), $db->qn('profile_value')])
 		            ->from($db->qn('#__user_profiles'))
 		            ->where($db->qn('user_id') . ' = ' . $db->q($userId))
@@ -303,7 +303,7 @@ trait UserFields
 			$db = $this->getDatabase();
 
 			/** @noinspection SqlResolve */
-			$query = $db->getQuery(true)
+			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			            ->delete($db->qn('#__user_profiles'))
 			            ->where($db->qn('user_id') . ' = ' . $db->q($userId))
 			            ->where($db->qn('profile_key') . ' LIKE ' . $db->q('sociallogin.%', false));
@@ -351,7 +351,7 @@ trait UserFields
 			return $db->q('sociallogin.' . $key);
 		}, array_keys($data['sociallogin']));
 
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 		            ->delete($db->qn('#__user_profiles'))
 		            ->where($db->qn('user_id') . ' = ' . $db->q($userId))
 		            ->where($db->qn('profile_key') . ' IN (' . implode(',', $fieldNames) . ')');
@@ -360,7 +360,7 @@ trait UserFields
 
 		$order = 1;
 
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 		            ->insert($db->qn('#__user_profiles'))
 		            ->columns([
 			            $db->qn('user_id'), $db->qn('profile_key'), $db->qn('profile_value'), $db->qn('ordering'),

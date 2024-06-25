@@ -116,7 +116,7 @@ final class Ajax
 		try
 		{
 			// Delete an existing profile value
-			$query = $db->getQuery(true)
+			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			            ->delete($db->qn('#__user_profiles'))
 			            ->where($db->qn('user_id') . ' = ' . $db->q($myUser->id))
 			            ->where($db->qn('profile_key') . ' = ' . $db->q('sociallogin.dontremind'));

@@ -201,7 +201,7 @@ class Pkg_SocialloginInstallerScript extends InstallerScript
 		try
 		{
 			$db    = Factory::getContainer()->get(DatabaseInterface::class);
-			$query = $db->getQuery(true)
+			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 				->update('#__extensions')
 				->set($db->qn('enabled') . ' = ' . $db->q(1))
 				->where('type = ' . $db->quote($type))
@@ -269,7 +269,7 @@ class Pkg_SocialloginInstallerScript extends InstallerScript
 	{
 		/** @var \Joomla\Database\DatabaseDriver $db */
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select($db->qn('extension_id'))
 			->from($db->qn('#__extensions'))
 			->where($db->qn('element') . ' = ' . $db->q($element))
@@ -298,7 +298,7 @@ class Pkg_SocialloginInstallerScript extends InstallerScript
 	{
 		/** @var \Joomla\Database\DatabaseDriver $db */
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select($db->qn('s.update_site_id'))
 			->from($db->qn('#__update_sites', 's'))
 			->innerJoin(
@@ -370,7 +370,7 @@ class Pkg_SocialloginInstallerScript extends InstallerScript
 		// Delete the remaining update sites
 		$deleteIDs = array_map([$db, 'q'], $deleteIDs);
 
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->delete($db->qn('#__update_sites'))
 			->where($db->qn('update_site_id') . ' IN(' . implode(',', $deleteIDs) . ')');
 
@@ -383,7 +383,7 @@ class Pkg_SocialloginInstallerScript extends InstallerScript
 			// Do nothing.
 		}
 
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->delete($db->qn('#__update_sites_extensions'))
 			->where($db->qn('update_site_id') . ' IN(' . implode(',', $deleteIDs) . ')');
 
@@ -414,7 +414,7 @@ class Pkg_SocialloginInstallerScript extends InstallerScript
 			[$folder, $element] = $pluginDef;
 
 			// Does the plugin exist? If not, there's nothing to do here.
-			$query = $db->getQuery(true)
+			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 				->select('*')
 				->from('#__extensions')
 				->where($db->qn('type') . ' = ' . $db->q('plugin'))

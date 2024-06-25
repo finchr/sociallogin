@@ -778,7 +778,7 @@ abstract class AbstractPlugin extends CMSPlugin implements SubscriberInterface, 
 
 		$db = $this->getDatabase();
 
-		$query = $db->getQuery(true)
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 		            ->delete($db->qn('#__user_profiles'))
 		            ->where($db->qn('user_id') . ' = ' . $db->q($userId))
 		            ->where($db->qn('profile_key') . ' LIKE ' . $db->q($slug . '.%'));
