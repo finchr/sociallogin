@@ -2,13 +2,7 @@
 
 <p>
 	<strong>Choose whether to show in frontend, backend, or both</strong>.
-	You can now choose whether each SocialLogin button will be shown only in the frontend, only in the backend, or in both frontend and backend (default).
-	<br/>
-	<em>DANGER!</em> Think twice before using this feature. If a user's only login method is SocialLogin and you select only one part of the site, this user will be unable to log into the other side of your site. For example, if an Administrator's only login method is Login with GitHub and you set the GitHub login button to only be shown in the backend of the site the Administrator user will be unable to log into the backend of the site.
-	<br/>
-	Also note that this is essentially meaningless if you have enabled Shared Sessions in Joomla's Global Configuration page.
-	<br/>
-	Finally, do remember that logging into yoru site with SocialLogin is a form of <em>strong authentication</em>. The external provider has verified the identity of your user before logging them into their service, has applied multi-factor authentication on their end, and any additional security measures which surpass what Joomla! can do (e.g. location-based additional authentication, blocking of suspicious activity, login notifications, etc). This is to say, SocialLogin is a <em>safer</em> to use login method even for your site's backend compared to Joomla's standard password authentication. There is no real or imagined security reason to disable SocialLogin in the backend of your site.
+	You can now choose whether each SocialLogin button will be shown only in the frontend, only in the backend, or in both frontend and backend (default). Kindly note that this is neither a security, nor a privacy feature. To understand the use cases we had in mind, and why this is neither a security, nor a privacy feature, please consult <a href="https://github.com/akeeba/sociallogin/wiki/Hiding-in-the-frontend-or-backend">the documentation page of the feature</a>.
 </p>
 
 <!--
