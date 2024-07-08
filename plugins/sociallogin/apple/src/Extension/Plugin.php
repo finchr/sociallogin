@@ -114,7 +114,7 @@ class Plugin extends AbstractPlugin
 
 			/** @var SessionInterface $session */
 			$session = $this->getApplication()->getSession();
-			$nonce   = $session->get('plg_sociallogin_apple.nonce', sha1(random_bytes(64)));
+			$nonce   = $session->get('plg_sociallogin_apple.nonce', hash('sha1', random_bytes(64)));
 			$session->set('plg_sociallogin_apple.nonce', $nonce);
 
 			$options         = [
