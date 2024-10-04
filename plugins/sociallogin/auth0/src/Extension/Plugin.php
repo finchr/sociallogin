@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Plugin\Sociallogin\SynologyOIDC\Extension;
+namespace Akeeba\Plugin\Sociallogin\Auth0OIDC\Extension;
 
 defined('_JEXEC') || die();
 
@@ -14,8 +14,8 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Cache\CacheControllerFactoryAwareTrait;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Uri\Uri;
-use Akeeba\Plugin\Sociallogin\SynologyOIDC\Integration\OAuth as SynologyOAuth;
-use Akeeba\Plugin\Sociallogin\SynologyOIDC\Integration\UserQuery;
+use Akeeba\Plugin\Sociallogin\Auth0OIDC\Integration\OAuth as Auth0OAuth;
+use Akeeba\Plugin\Sociallogin\Auth0OIDC\Integration\UserQuery;
 use Akeeba\Plugin\System\SocialLogin\Library\Data\UserData;
 use Akeeba\Plugin\System\SocialLogin\Library\OAuth\OpenIDConnectTrait;
 use Akeeba\Plugin\System\SocialLogin\Library\Plugin\AbstractPlugin;
@@ -31,7 +31,7 @@ class Plugin extends AbstractPlugin
 	use CacheControllerFactoryAwareTrait;
 	use OpenIDConnectTrait;
 
-	private ?string $wellknown;
+	private ?string $domain;
 
 	/** @inheritDoc */
 	public static function getSubscribedEvents(): array
@@ -39,7 +39,7 @@ class Plugin extends AbstractPlugin
 		return array_merge(
 			parent::getSubscribedEvents(),
 			[
-				'onAjaxSynology' => 'onSocialLoginAjax',
+				'onAjaxAuth0' => 'onSocialLoginAjax',
 			]
 		);
 	}
@@ -54,17 +54,17 @@ class Plugin extends AbstractPlugin
 		parent::init();
 
 		// Per-plugin customization
-		$this->wellknown = $this->params->get('wellknown') ?: null;
+		$this->domain = $this->params->get('domain') ?: null;
 	}
 
 	/**
 	 * Returns a GitHubOAuth object
 	 *
-	 * @return  SynologyOAuth
+	 * @return  Auth0OAuth
 	 *
 	 * @throws  Exception
 	 */
-	protected function getConnector(): SynologyOAuth
+	protected function getConnector(): Auth0OAuth
 	{
 		if (!is_null($this->connector))
 		{
@@ -81,51 +81,34 @@ class Plugin extends AbstractPlugin
 				Uri::base(),
 				$this->integrationName
 			),
-			'wellknown'    => $this->wellknown,
+			'domain'    => $this->domain,
+			'authurl'  => sprintf(
+				"https://%s/authorize",
+				$this->domain
+			),
+			'tokenurl'  => sprintf(
+				"https://%s/oauth/token",
+				$this->domain
+			),
 			'scope'        => 'email openid',
 		];
 		$httpClient      = HttpFactory::getHttp();
-		$this->connector = new SynologyOAuth($options, $httpClient, $application->input, $application);
+		$this->connector = new Auth0OAuth($options, $httpClient, $application->input, $application);
 
 		return $this->connector;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	protected function getSocialNetworkProfileInformation(object $connector): array
 	{
-		$tokenArray = $connector->getToken();
-
-		try
-		{
-			$endpoints = $this->getOIDCEndpoints($this->wellknown);
-		}
-		catch (Exception $e)
-		{
-			$endpoints = null;
-		}
-
-		if (empty($endpoints))
-		{
-			return [];
-		}
-
-		$options      = new Registry(
-			[
-				'userAgent' => 'Akeeba-Social-Login',
-			]
-		);
+		$tokenArray   = $connector->getToken();
+		$options      = new Registry(['userAgent' => 'Akeeba-Social-Login']);
 		$client       = HttpFactory::getHttp($options);
-		$ghUserQuery  = new UserQuery($client, $tokenArray['access_token'], $endpoints->userinfourl);
+		$ghUserQuery  = new UserQuery($client, $tokenArray['access_token'], sprintf("https://%s/userinfo", $this->domain));
 		$ghUserFields = $ghUserQuery->getUserInformation();
 
 		return (array) $ghUserFields;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	protected function mapSocialProfileToUserData(array $socialProfile): UserData
 	{
 		$userData           = new UserData();
@@ -139,23 +122,7 @@ class Plugin extends AbstractPlugin
 
 	protected function isProperlySetUp(): bool
 	{
-		$basicCheck = parent::isProperlySetUp() && !empty($this->wellknown);
-
-		if ($basicCheck)
-		{
-			try
-			{
-				$endpoints = $this->getOIDCEndpoints($this->wellknown);
-			}
-			catch (Exception $e)
-			{
-				return false;
-			}
-
-			$basicCheck = !empty($endpoints);
-		}
-
-		return $basicCheck;
+		return parent::isProperlySetUp() && !empty($this->domain);
 	}
 
 

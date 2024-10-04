@@ -5,21 +5,15 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Plugin\Sociallogin\SynologyOIDC\Integration;
+namespace Akeeba\Plugin\Sociallogin\Auth0OIDC\Integration;
 
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Cache\CacheControllerFactoryAwareTrait;
-use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Http\Http;
 use Joomla\Input\Input;
 use Akeeba\Plugin\System\SocialLogin\Library\OAuth\OAuth2Client;
-use Akeeba\Plugin\System\SocialLogin\Library\OAuth\OpenIDConnectTrait;
 
 class OAuth extends OAuth2Client
 {
-	use CacheControllerFactoryAwareTrait;
-	use OpenIDConnectTrait;
-
 	/**
 	 * Constructor.
 	 *
@@ -32,22 +26,10 @@ class OAuth extends OAuth2Client
 	{
 		$this->application = $application;
 
-		if (empty($options['wellknown']))
+		if (empty($options['domain']))
 		{
 			throw new \RuntimeException('Not configured', 500);
 		}
-
-		$endpoints = $this->getOIDCEndpoints($options['wellknown']);
-
-		if (empty($endpoints))
-		{
-			throw new \RuntimeException('Invalid Well-known URL, or cannot retrieve information.');
-		}
-
-		// Set up the authentication and token urls if not already set.
-		$options['authurl']  ??= $endpoints->authurl;
-		$options['tokenurl'] ??= $endpoints->tokenurl;
-		$options['scope']    ??= 'email openid';
 
 		// Call the \Joomla\OAuth2\Client constructor to setup the object.
 		parent::__construct($options, $client, $input, $application);
