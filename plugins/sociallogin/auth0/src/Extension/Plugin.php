@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Plugin\Sociallogin\Auth0OIDC\Extension;
+namespace Akeeba\Plugin\Sociallogin\Auth0\Extension;
 
 defined('_JEXEC') || die();
 
@@ -14,10 +14,9 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Cache\CacheControllerFactoryAwareTrait;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Uri\Uri;
-use Akeeba\Plugin\Sociallogin\Auth0OIDC\Integration\OAuth as Auth0OAuth;
-use Akeeba\Plugin\Sociallogin\Auth0OIDC\Integration\UserQuery;
+use Akeeba\Plugin\Sociallogin\Auth0\Integration\OAuth as Auth0OAuth;
+use Akeeba\Plugin\Sociallogin\Auth0\Integration\UserQuery;
 use Akeeba\Plugin\System\SocialLogin\Library\Data\UserData;
-use Akeeba\Plugin\System\SocialLogin\Library\OAuth\OpenIDConnectTrait;
 use Akeeba\Plugin\System\SocialLogin\Library\Plugin\AbstractPlugin;
 use Joomla\Registry\Registry;
 
@@ -29,7 +28,6 @@ if (!class_exists(AbstractPlugin::class, true))
 class Plugin extends AbstractPlugin
 {
 	use CacheControllerFactoryAwareTrait;
-	use OpenIDConnectTrait;
 
 	private ?string $domain;
 

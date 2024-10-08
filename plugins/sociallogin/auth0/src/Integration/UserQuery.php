@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Plugin\Sociallogin\Auth0OIDC\Integration;
+namespace Akeeba\Plugin\Sociallogin\Auth0\Integration;
 
 use Joomla\CMS\Http\Http;
 
